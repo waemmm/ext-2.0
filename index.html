@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Cord Controller</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        button {
+            padding: 12px 24px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        #connectBtn { background-color: #007bff; color: white; }
+        #connectBtn:hover { background-color: #0056b3; }
+        #onBtn { background-color: #28a745; color: white; }
+        #onBtn:disabled { background-color: #a3d7b0; cursor: not-allowed; }
+        #offBtn { background-color: #dc3545; color: white; }
+        #offBtn:disabled { background-color: #eaa4aa; cursor: not-allowed; }
+        #status { margin-top: 15px; font-weight: bold; color: #555; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Relay Control Panel</h2>
+        <button id="connectBtn">Connect Bluetooth</button>
+        <br><br>
+        <button id="onBtn" disabled>Turn ON</button>
+        <button id="offBtn" disabled>Turn OFF</button>
+        <p id="status">Status: Disconnected</p>
+    </div>
+
+    <script>
+        let port;
+        let writer;
+
+        const connectBtn = document.getElementById('connectBtn');
+        const onBtn = document.getElementById('onBtn');
+        const offBtn = document.getElementById('offBtn');
+        const statusText = document.getElementById('status');
+
+        connectBtn.addEventListener('click', async () => {
+            try {
+                port = await navigator.serial.requestPort();
+                await port.open({ baudRate: 9600 });
+               
+                const textEncoder = new TextEncoderStream();
+                const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+                writer = textEncoder.writable.getWriter();
+
+                statusText.innerText = "Status: Connected!";
+                statusText.style.color = "green";
+                connectBtn.disabled = true;
+                onBtn.disabled = false;
+                offBtn.disabled = false;
+
+            } catch (err) {
+                console.error("Connection failed:", err);
+                statusText.innerText = "Status: Connection Failed/Canceled";
+                statusText.style.color = "red";
+            }
+        });
+
+        async function sendCommand(command) {
+            if (writer) {
+                await writer.write(command);
+                console.log("Sent:", command);
+            }
+        }
+
+        onBtn.addEventListener('click', () => sendCommand('1'));
+        offBtn.addEventListener('click', () => sendCommand('0'));
+
+    </script>
+</body>
+</html>
