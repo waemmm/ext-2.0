@@ -1,237 +1,262 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Smart Extension Controller</title>
     <style>
-        /* Color palette mapping from image_40b3e6.png */
-        :root {
-            --lavender: #E6E6FA;
-            --thistle: #D8BFD8;
-            --peach: #FFDAB9;
-            --sage-green: #C8D8C4;
-            --muted-purple: #C3C1CD;
-        }
+      /* Color palette mapping from image_40b3e6.png */
+      :root {
+        --lavender: #e6e6fa;
+        --thistle: #d8bfd8;
+        --peach: #ffdab9;
+        --sage-green: #c8d8c4;
+        --muted-purple: #c3c1cd;
+      }
 
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            /* Smoothly animating background gradient using palette colors */
-            background: linear-gradient(135deg, var(--lavender), var(--thistle), var(--peach));
-            background-size: 400% 400%;
-            animation: flowingGradient 12s ease infinite;
-            overflow: hidden;
-        }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        /* Smoothly animating background gradient using palette colors */
+        background: linear-gradient(
+          135deg,
+          var(--lavender),
+          var(--thistle),
+          var(--peach)
+        );
+        background-size: 400% 400%;
+        animation: flowingGradient 12s ease infinite;
+        overflow: hidden;
+      }
 
-        @keyframes flowingGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+      @keyframes flowingGradient {
+        0% {
+          background-position: 0% 50%;
         }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
 
-        /* Glassmorphism Container */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.22);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.45);
-            box-shadow: 0 16px 32px 0 rgba(74, 71, 90, 0.12);
-            padding: 2.5rem 2rem;
-            width: 320px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
+      /* Glassmorphism Container */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        box-shadow: 0 16px 32px 0 rgba(74, 71, 90, 0.12);
+        padding: 2.5rem 2rem;
+        width: 320px;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
 
-        h2 {
-            margin: 0 0 0.5rem 0;
-            font-weight: 700;
-            color: #4A465A;
-            letter-spacing: -0.5px;
-        }
+      h2 {
+        margin: 0 0 0.5rem 0;
+        font-weight: 700;
+        color: #4a465a;
+        letter-spacing: -0.5px;
+      }
 
-        p.subtitle {
-            margin: 0 0 2rem 0;
-            font-size: 0.9rem;
-            color: #686377;
-        }
+      p.subtitle {
+        margin: 0 0 2rem 0;
+        font-size: 0.9rem;
+        color: #686377;
+      }
 
-        /* Hardware Connection Pill */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.35);
-            padding: 6px 14px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #514D62;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            margin-bottom: 2rem;
-        }
+      /* Hardware Connection Pill */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.35);
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #514d62;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        margin-bottom: 2rem;
+      }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #E07A5F;
-            border-radius: 50%;
-            margin-right: 8px;
-            box-shadow: 0 0 8px #E07A5F;
-            transition: all 0.4s ease;
-        }
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #e07a5f;
+        border-radius: 50%;
+        margin-right: 8px;
+        box-shadow: 0 0 8px #e07a5f;
+        transition: all 0.4s ease;
+      }
 
-        .status-dot.connected {
-            background-color: #52B788;
-            box-shadow: 0 0 10px #52B788;
-        }
+      .status-dot.connected {
+        background-color: #52b788;
+        box-shadow: 0 0 10px #52b788;
+      }
 
-        /* Button Styling */
-        .btn {
-            width: 100%;
-            padding: 14px;
-            margin: 8px 0;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        }
+      /* Button Styling */
+      .btn {
+        width: 100%;
+        padding: 14px;
+        margin: 8px 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      }
 
-        #connectBtn {
-            background-color: var(--muted-purple);
-            color: #3E3B47;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
+      #connectBtn {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: #4a465a;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
 
-        #connectBtn:hover:not(:disabled) {
-            background-color: #B6B4C2;
-            transform: translateY(-2px);
-        }
+      #connectBtn:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.45);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(216, 191, 216, 0.6); /* Thistle palette glow */
+        border-color: rgba(255, 255, 255, 0.9);
+      }
 
-        .action-group {
-            margin-top: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+      .action-group {
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
 
-        #onBtn {
-            background-color: var(--sage-green);
-            color: #3A4737;
-        }
+      #onBtn {
+        background-color: var(--sage-green);
+        color: #3a4737;
+      }
 
-        #onBtn:hover:not(:disabled) {
-            filter: brightness(0.96);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(200, 216, 196, 0.4);
-        }
+      #onBtn:hover:not(:disabled) {
+        filter: brightness(0.96);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(200, 216, 196, 0.4);
+      }
 
-        #offBtn {
-            background-color: rgba(255, 255, 255, 0.4);
-            color: #4A465A;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+      #offBtn {
+        background-color: rgba(255, 255, 255, 0.4);
+        color: #4a465a;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
 
-        #offBtn:hover:not(:disabled) {
-            background-color: rgba(255, 255, 255, 0.55);
-            transform: translateY(-2px);
-        }
+      #offBtn:hover:not(:disabled) {
+        background-color: rgba(255, 255, 255, 0.55);
+        transform: translateY(-2px);
+      }
 
-        .btn:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
-        }
+      .btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        transform: none !important;
+        box-shadow: none !important;
+      }
 
-        /* Power Display Ring */
-        .power-indicator {
-            margin-top: 1.5rem;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-            color: #7D788E;
-        }
+      /* Power Display Ring */
+      .power-indicator {
+        margin-top: 1.5rem;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+        color: #7d788e;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="glass-card">
-        <h2>Smart Relay</h2>
-        <p class="subtitle">Home Automation Portal</p>
+      <h2>Smart Relay</h2>
+      <p class="subtitle">Home Automation Portal</p>
 
-        <div class="status-badge">
-            <span id="statusDot" class="status-dot"></span>
-            <span id="statusText">Disconnected</span>
-        </div>
+      <div class="status-badge">
+        <span id="statusDot" class="status-dot"></span>
+        <span id="statusText">Disconnected</span>
+      </div>
 
-        <button id="connectBtn">Connect Bluetooth</button>
+      <button id="connectBtn">Connect Bluetooth</button>
 
-        <div class="action-group">
-            <button id="onBtn" class="btn" disabled>Turn Power ON</button>
-            <button id="offBtn" class="btn" disabled>Turn Power OFF</button>
-        </div>
+      <div class="action-group">
+        <button id="onBtn" class="btn" disabled>Turn Power ON</button>
+        <button id="offBtn" class="btn" disabled>Turn Power OFF</button>
+      </div>
 
-        <div id="powerState" class="power-indicator">System Idle</div>
+      <div id="powerState" class="power-indicator">System Idle</div>
     </div>
 
     <script>
-        let port;
-        let writer;
+      let port;
+      let writer;
 
-        const connectBtn = document.getElementById('connectBtn');
-        const onBtn = document.getElementById('onBtn');
-        const offBtn = document.getElementById('offBtn');
-        const statusText = document.getElementById('statusText');
-        const statusDot = document.getElementById('statusDot');
-        const powerState = document.getElementById('powerState');
+      const connectBtn = document.getElementById("connectBtn");
+      const onBtn = document.getElementById("onBtn");
+      const offBtn = document.getElementById("offBtn");
+      const statusText = document.getElementById("statusText");
+      const statusDot = document.getElementById("statusDot");
+      const powerState = document.getElementById("powerState");
 
-        connectBtn.addEventListener('click', async () => {
-            try {
-                port = await navigator.serial.requestPort();
-                await port.open({ baudRate: 9600 });
-                
-                const textEncoder = new TextEncoderStream();
-                const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-                writer = textEncoder.writable.getWriter();
+      connectBtn.addEventListener("click", async () => {
+        try {
+          port = await navigator.serial.requestPort();
+          await port.open({ baudRate: 9600 });
 
-                statusText.innerText = "Connected";
-                statusDot.classList.add('connected');
-                connectBtn.disabled = true;
-                onBtn.disabled = false;
-                offBtn.disabled = false;
-                powerState.innerText = "System Armed";
+          const textEncoder = new TextEncoderStream();
+          const writableStreamClosed = textEncoder.readable.pipeTo(
+            port.writable,
+          );
+          writer = textEncoder.writable.getWriter();
 
-            } catch (err) {
-                console.error("Connection failed:", err);
-                statusText.innerText = "Connection Failed";
-                statusDot.classList.remove('connected');
-            }
-        });
-
-        async function sendCommand(command, label) {
-            if (writer) {
-                await writer.write(command);
-                powerState.innerText = `Power: ${label}`;
-                if(label === "ON") {
-                    powerState.style.color = "#475E43";
-                } else {
-                    powerState.style.color = "#7D788E";
-                }
-            }
+          statusText.innerText = "Connected";
+          statusDot.classList.add("connected");
+          connectBtn.disabled = true;
+          onBtn.disabled = false;
+          offBtn.disabled = false;
+          powerState.innerText = "System Armed";
+        } catch (err) {
+          console.error("Connection failed:", err);
+          statusText.innerText = "Connection Failed";
+          statusDot.classList.remove("connected");
         }
+      });
 
-        onBtn.addEventListener('click', () => sendCommand('1', 'ON'));
-        offBtn.addEventListener('click', () => sendCommand('0', 'OFF'));
+      async function sendCommand(command, label) {
+        if (writer) {
+          await writer.write(command);
+          powerState.innerText = `Power: ${label}`;
+          if (label === "ON") {
+            powerState.style.color = "#475E43";
+          } else {
+            powerState.style.color = "#7D788E";
+          }
+        }
+      }
+
+      onBtn.addEventListener("click", () => sendCommand("1", "ON"));
+      offBtn.addEventListener("click", () => sendCommand("0", "OFF"));
     </script>
-</body>
+  </body>
 </html>
