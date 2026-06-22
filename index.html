@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Smart Extension Controller</title>
     <style>
-      /* Color palette mapping */
       :root {
         --lavender: #e6e6fa;
         --thistle: #d8bfd8;
@@ -33,7 +32,6 @@
         100% { background-position: 0% 50%; }
       }
 
-      /* Glassmorphism Container */
       .glass-card {
         background: rgba(255, 255, 255, 0.22);
         backdrop-filter: blur(16px);
@@ -46,182 +44,114 @@
         text-align: center;
       }
 
-      h2 {
-        margin: 0 0 0.5rem 0;
-        font-weight: 700;
-        color: #4a465a;
-        letter-spacing: -0.5px;
-      }
-
-      p.subtitle {
-        margin: 0 0 2rem 0;
-        font-size: 0.9rem;
-        color: #686377;
-      }
+      h2 { margin: 0 0 0.5rem 0; font-weight: 700; color: #4a465a; letter-spacing: -0.5px; }
+      p.subtitle { margin: 0 0 2rem 0; font-size: 0.9rem; color: #686377; }
 
       .status-badge {
-        display: inline-flex;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.35);
-        padding: 6px 14px;
-        border-radius: 50px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #514d62;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        margin-bottom: 1.5rem;
+        display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.35);
+        padding: 6px 14px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;
+        color: #514d62; border: 1px solid rgba(255, 255, 255, 0.25); margin-bottom: 1.5rem;
       }
 
       .status-dot {
-        width: 8px;
-        height: 8px;
-        background-color: #e07a5f;
-        border-radius: 50%;
-        margin-right: 8px;
-        box-shadow: 0 0 8px #e07a5f;
-        transition: all 0.4s ease;
+        width: 8px; height: 8px; background-color: #e07a5f; border-radius: 50%;
+        margin-right: 8px; box-shadow: 0 0 8px #e07a5f; transition: all 0.4s ease;
       }
+      .status-dot.connected { background-color: #52b788; box-shadow: 0 0 10px #52b788; }
 
-      .status-dot.connected {
-        background-color: #52b788;
-        box-shadow: 0 0 10px #52b788;
-      }
-
-      /* Buttons */
       .btn {
-        width: 100%;
-        padding: 14px;
-        margin: 6px 0;
-        font-size: 0.95rem;
-        font-weight: 600;
-        border: none;
-        border-radius: 14px;
-        cursor: pointer;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 100%; padding: 14px; margin: 6px 0; font-size: 0.95rem; font-weight: 600;
+        border: none; border-radius: 14px; cursor: pointer; 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .btn:active:not(:disabled), .action-btn:active:not(:disabled), #cycleModeBtn:active:not(:disabled) {
+        transform: translateY(1px) !important;
+        box-shadow: none !important;
       }
 
       #connectBtn {
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        color: #4a465a;
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        padding: 14px;
-        width: 100%;
-        border-radius: 14px;
-        cursor: pointer;
-        transition: 0.2s;
+        background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); color: #4a465a;
+        border: 1px solid rgba(255, 255, 255, 0.6); text-transform: uppercase; letter-spacing: 1px;
       }
-
-      #connectBtn:hover:not(:disabled) {
-        background: rgba(255, 255, 255, 0.45);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(216, 191, 216, 0.6);
-      }
-
-      #onBtn {
-        background-color: var(--sage-green);
-        color: #3a4737;
-      }
-
-      #onBtn:hover:not(:disabled) {
-        filter: brightness(0.96);
+      #connectBtn:hover:not(:disabled) { 
+        background: rgba(255, 255, 255, 0.45); box-shadow: 0 8px 25px rgba(216, 191, 216, 0.6); 
         transform: translateY(-2px);
       }
 
-      #offBtn {
-        background-color: rgba(255, 255, 255, 0.4);
-        color: #4a465a;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+      #onBtn { background-color: var(--sage-green); color: #3a4737; }
+      #onBtn:hover:not(:disabled) { 
+        filter: brightness(0.96); transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(82, 183, 136, 0.3);
       }
 
-      #offBtn:hover:not(:disabled) {
-        background-color: rgba(255, 255, 255, 0.55);
-        transform: translateY(-2px);
+      #offBtn { background-color: rgba(255, 255, 255, 0.4); color: #4a465a; border: 1px solid rgba(255, 255, 255, 0.2); }
+      #offBtn:hover:not(:disabled) { 
+        background-color: rgba(255, 255, 255, 0.55); transform: translateY(-2px); 
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
       }
 
-      button:disabled {
-        opacity: 0.35;
-        cursor: not-allowed;
-        transform: none !important;
-      }
+      button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
       .power-indicator {
-        margin-top: 1rem;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 700;
-        color: #7d788e;
+        margin-top: 1rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+        font-weight: 700; color: #7d788e; transition: color 0.3s ease;
       }
 
-      /* New Controls for LCD and Timer */
-      .advanced-controls {
-        margin-top: 20px;
-        text-align: left;
-        border-top: 1px solid rgba(255,255,255,0.4);
-        padding-top: 15px;
-      }
-
-      .control-label {
-        font-size: 0.75rem;
-        color: #514d62;
-        font-weight: bold;
-        letter-spacing: 0.5px;
-      }
-
-      .input-group {
-        display: flex;
-        gap: 8px;
-        margin-top: 6px;
-        margin-bottom: 12px;
-      }
+      .advanced-controls { margin-top: 20px; text-align: left; border-top: 1px solid rgba(255,255,255,0.4); padding-top: 15px; }
+      .control-label { font-size: 0.75rem; color: #514d62; font-weight: bold; letter-spacing: 0.5px; }
+      .input-group { display: flex; gap: 6px; margin-top: 6px; margin-bottom: 12px; }
 
       .glass-input {
-        flex: 1;
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        background: rgba(255, 255, 255, 0.3);
-        color: #4a465a;
-        font-weight: 600;
-        outline: none;
+        flex: 1; padding: 10px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.3); color: #4a465a; font-weight: 600; outline: none;
+        transition: all 0.3s ease; text-align: center; font-size: 0.9rem;
       }
-
       .glass-input::placeholder { color: #8c889a; font-weight: 400; }
-
-      .action-btn {
-        padding: 10px 16px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: bold;
-        color: #4a465a;
-        transition: 0.2s;
+      .glass-input:focus:not(:disabled) {
+        border-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.45);
       }
 
-      #startTimerBtn { background-color: var(--peach); }
-      #startTimerBtn:hover:not(:disabled) { filter: brightness(0.95); transform: translateY(-1px); }
+      /* Specific style for message text box */
+      #msgInput { text-align: left; }
+
+      .action-btn { 
+        padding: 10px 14px; border: none; border-radius: 10px; cursor: pointer; 
+        font-weight: bold; color: #4a465a; transition: all 0.3s ease; 
+      }
+      .action-btn:hover:not(:disabled) {
+        transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+
+      #startTimerBtn { background-color: var(--peach); min-width: 65px; }
+      #startTimerBtn:hover:not(:disabled) { filter: brightness(0.95); }
       
       #sendMsgBtn { background-color: var(--thistle); }
-      #sendMsgBtn:hover:not(:disabled) { filter: brightness(0.95); transform: translateY(-1px); }
+      #sendMsgBtn:hover:not(:disabled) { filter: brightness(0.95); }
 
-      #clearMsgBtn {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid rgba(255,255,255,0.4);
-        border-radius: 8px;
-        background: transparent;
-        color: #514d62;
-        cursor: pointer;
-        font-size: 0.8rem;
-        font-weight: 600;
-        transition: 0.2s;
+      #cycleModeBtn {
+        width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.5); border-radius: 10px;
+        background: rgba(255,255,255,0.2); color: #514d62; cursor: pointer; font-weight: 700; transition: all 0.3s;
       }
-      #clearMsgBtn:hover:not(:disabled) { background: rgba(255,255,255,0.2); }
+      #cycleModeBtn:hover:not(:disabled) { 
+        background: rgba(255,255,255,0.4); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      }
+
+      /* Ticking Down UI Element */
+      .live-timer-box {
+        margin-top: 10px;
+        margin-bottom: 15px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 14px;
+        text-align: center;
+        display: none; /* Controlled via state */
+      }
+      .live-timer-set { font-size: 0.75rem; font-weight: 700; color: #686377; text-transform: uppercase; letter-spacing: 0.5px; }
+      .live-timer-countdown { font-size: 1.6rem; font-weight: 800; color: #3d3a49; margin-top: 2px; font-variant-numeric: tabular-nums; }
     </style>
   </head>
   <body>
@@ -234,7 +164,7 @@
         <span id="statusText">Disconnected</span>
       </div>
 
-      <button id="connectBtn">Connect Bluetooth</button>
+      <button id="connectBtn" class="btn">Connect Bluetooth</button>
 
       <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 4px;">
         <button id="onBtn" class="btn" disabled>Turn Power ON</button>
@@ -243,58 +173,68 @@
 
       <div id="powerState" class="power-indicator">System Idle</div>
 
+      <div id="liveTimerBox" class="live-timer-box">
+        <div id="liveTimerSet" class="live-timer-set">SET TIME: 00:00:00</div>
+        <div id="liveTimerCountdown" class="live-timer-countdown">00:00:00</div>
+      </div>
+
       <div class="advanced-controls">
-        <label class="control-label">SET TIMER (MINUTES)</label>
+        <label class="control-label">SET TIMER (HH / MM / SS)</label>
         <div class="input-group">
-          <input type="number" id="timerInput" class="glass-input" placeholder="e.g. 30" disabled>
+          <input type="number" id="timerH" class="glass-input" placeholder="HH" min="0" max="24" step="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" disabled>
+          <input type="number" id="timerM" class="glass-input" placeholder="MM" min="0" max="60" step="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" disabled>
+          <input type="number" id="timerS" class="glass-input" placeholder="SS" min="0" max="60" step="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" disabled>
           <button id="startTimerBtn" class="action-btn" disabled>Start</button>
         </div>
 
         <label class="control-label">LCD CUSTOM MESSAGE</label>
         <div class="input-group">
-          <input type="text" id="msgInput" class="glass-input" placeholder="Up to 16 chars..." maxlength="16" disabled>
+          <input type="text" id="msgInput" class="glass-input" placeholder="Up to 32 chars..." maxlength="32" disabled>
           <button id="sendMsgBtn" class="action-btn" disabled>Send</button>
         </div>
-        <button id="clearMsgBtn" disabled>Return to Clock Mode</button>
+        
+        <button id="cycleModeBtn" disabled>Cycle LCD Mode</button>
       </div>
     </div>
 
     <script>
       let port;
       let writer;
+      let countdownInterval = null;
 
-      // Primary UI Elements
       const connectBtn = document.getElementById("connectBtn");
       const onBtn = document.getElementById("onBtn");
       const offBtn = document.getElementById("offBtn");
       const statusText = document.getElementById("statusText");
       const statusDot = document.getElementById("statusDot");
       const powerState = document.getElementById("powerState");
-
-      // Advanced UI Elements
-      const timerInput = document.getElementById("timerInput");
+      
+      const timerH = document.getElementById("timerH");
+      const timerM = document.getElementById("timerM");
+      const timerS = document.getElementById("timerS");
       const startTimerBtn = document.getElementById("startTimerBtn");
+      
+      const liveTimerBox = document.getElementById("liveTimerBox");
+      const liveTimerSet = document.getElementById("liveTimerSet");
+      const liveTimerCountdown = document.getElementById("liveTimerCountdown");
+
       const msgInput = document.getElementById("msgInput");
       const sendMsgBtn = document.getElementById("sendMsgBtn");
-      const clearMsgBtn = document.getElementById("clearMsgBtn");
+      const cycleModeBtn = document.getElementById("cycleModeBtn");
 
-      // Array of buttons to enable/disable easily
-      const hwControls = [onBtn, offBtn, timerInput, startTimerBtn, msgInput, sendMsgBtn, clearMsgBtn];
+      const hwControls = [onBtn, offBtn, timerH, timerM, timerS, startTimerBtn, msgInput, sendMsgBtn, cycleModeBtn];
 
       connectBtn.addEventListener("click", async () => {
         try {
           port = await navigator.serial.requestPort();
           await port.open({ baudRate: 9600 });
-
           const textEncoder = new TextEncoderStream();
-          const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+          textEncoder.readable.pipeTo(port.writable);
           writer = textEncoder.writable.getWriter();
 
           statusText.innerText = "Connected";
           statusDot.classList.add("connected");
           connectBtn.disabled = true;
-          
-          // Enable all controls
           hwControls.forEach(el => el.disabled = false);
           powerState.innerText = "System Armed";
         } catch (err) {
@@ -304,12 +244,9 @@
         }
       });
 
-      // The core sending function
       async function sendCommand(command, label) {
         if (writer) {
-          // CRITICAL: We add \n here so Arduino's readStringUntil('\n') triggers!
           await writer.write(command + '\n');
-          
           if (label) {
             powerState.innerText = `System: ${label}`;
             powerState.style.color = (label.includes("ON") || label.includes("ACTIVE")) ? "#475E43" : "#7D788E";
@@ -317,31 +254,113 @@
         }
       }
 
-      // Basic Buttons
-      onBtn.addEventListener("click", () => sendCommand("1", "ON - Continuous"));
-      offBtn.addEventListener("click", () => sendCommand("0", "OFF"));
+      function triggerButtonFeedback(btnElement, successText, originalText) {
+        btnElement.innerText = successText;
+        setTimeout(() => {
+          btnElement.innerText = originalText;
+        }, 1500);
+      }
 
-      // Timer Logic
+      // Format utility helper to ensure 00:00:00 view configurations
+      function padZero(num) {
+        return num.toString().padStart(2, '0');
+      }
+
+      function startLocalCountdown(totalSeconds) {
+        // Clear old intervals if running
+        if (countdownInterval) clearInterval(countdownInterval);
+
+        let initialSeconds = totalSeconds;
+        let setH = Math.floor(initialSeconds / 3600);
+        let setM = Math.floor((initialSeconds % 3600) / 60);
+        let setS = initialSeconds % 60;
+
+        liveTimerSet.innerText = `SET TIME: ${padZero(setH)}:${padZero(setM)}:${padZero(setS)}`;
+        liveTimerBox.style.display = "block";
+
+        countdownInterval = setInterval(() => {
+          if (totalSeconds <= 0) {
+            clearInterval(countdownInterval);
+            liveTimerBox.style.display = "none";
+            powerState.innerText = "System: OFF";
+            powerState.style.color = "#7D788E";
+            return;
+          }
+
+          totalSeconds--;
+
+          let remH = Math.floor(totalSeconds / 3600);
+          let remM = Math.floor((totalSeconds % 3600) / 60);
+          let remSec = totalSeconds % 60;
+
+          liveTimerCountdown.innerText = `${padZero(remH)}:${padZero(remM)}:${padZero(remSec)}`;
+        }, 1000);
+      }
+
+      onBtn.addEventListener("click", () => {
+        if (countdownInterval) clearInterval(countdownInterval);
+        liveTimerBox.style.display = "none";
+        sendCommand("1", "ON - Continuous");
+      });
+
+      offBtn.addEventListener("click", () => {
+        if (countdownInterval) clearInterval(countdownInterval);
+        liveTimerBox.style.display = "none";
+        sendCommand("0", "OFF");
+      });
+
       startTimerBtn.addEventListener("click", () => {
-        const mins = timerInput.value;
-        if (mins > 0) {
-          sendCommand(`T:${mins}`, `TIMER ACTIVE (${mins}m)`);
-          timerInput.value = '';
+        // Fallback Javascript String verification checks against rational patterns, negatives, or completely empty sets
+        if (timerH.value.includes('.') || timerM.value.includes('.') || timerS.value.includes('.')) {
+          alert("Error: Decimals/Rational numbers are not allowed.");
+          return;
+        }
+
+        const hrs = parseInt(timerH.value) || 0;
+        const mins = parseInt(timerM.value) || 0;
+        const secs = parseInt(timerS.value) || 0;
+
+        if (hrs < 0 || mins < 0 || secs < 0) {
+          alert("Error: System values cannot be negative.");
+          return;
+        }
+        if (hrs > 24) {
+          alert("Error: Maximum configuration value for hours is 24.");
+          return;
+        }
+        if (mins > 60 || secs > 60) {
+          alert("Error: Maximum configuration value for minutes/seconds is 60.");
+          return;
+        }
+
+        const totalSeconds = (hrs * 3600) + (mins * 60) + secs;
+
+        if (totalSeconds > 0) {
+          sendCommand(`T:${totalSeconds}`, `TIMER ACTIVE`);
+          startLocalCountdown(totalSeconds);
+          
+          // Reset internal inputs cleanly
+          timerH.value = '';
+          timerM.value = '';
+          timerS.value = '';
+          triggerButtonFeedback(startTimerBtn, "Started!", "Start");
+        } else {
+          alert("Please enter a value greater than 0 seconds.");
         }
       });
 
-      // Message Logic
       sendMsgBtn.addEventListener("click", () => {
         const msg = msgInput.value;
         if (msg.length > 0) {
           sendCommand(`M:${msg}`, 'Displaying Web Message');
+          msgInput.value = '';
+          triggerButtonFeedback(sendMsgBtn, "Sent!", "Send");
         }
       });
 
-      // Clear Message Logic
-      clearMsgBtn.addEventListener("click", () => {
-        sendCommand("C", "Displaying Clock");
-        msgInput.value = '';
+      cycleModeBtn.addEventListener("click", () => {
+        sendCommand("MODE", "Display Mode Switched");
+        triggerButtonFeedback(cycleModeBtn, "Cycled!", "Cycle LCD Mode");
       });
     </script>
   </body>
